@@ -4,7 +4,7 @@ import { mockApi } from '@/services/mockApi';
 import type { Driver } from '@/data/mock';
 
 export type ScreenName = 'splash' | 'welcome' | 'login' | 'otp' | 'verify' | 'home' | 'search' | 'drivers' | 'booking' | 'tracking' | 'complete' | 'trips' | 'wallet' | 'inbox' | 'profile';
-export type TripStage = 'searching' | 'accepted' | 'arriving' | 'started' | 'completed';
+export type TripStage = 'searching' | 'accepted' | 'arriving' | 'arrived' | 'started' | 'completed';
 
 type DrabaContextValue = {
   screen: ScreenName;

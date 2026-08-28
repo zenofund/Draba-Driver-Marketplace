@@ -54,7 +54,7 @@ function App() {
 
   useEffect(() => {
     if (screen !== 'tracking') return;
-    const stages: Array<'searching' | 'accepted' | 'arriving' | 'started' | 'completed'> = ['searching', 'accepted', 'arriving', 'started', 'completed'];
+    const stages: Array<'searching' | 'accepted' | 'arriving' | 'arrived' | 'started' | 'completed'> = ['searching', 'accepted', 'arriving', 'arrived', 'started', 'completed'];
     let index = stages.indexOf(tripStage);
     const timer = setInterval(() => {
       index += 1;
@@ -124,13 +124,13 @@ function WelcomeScreen() {
       </View>
       <View style={styles.welcomeHero}>
         <View style={[styles.heroOrb, { backgroundColor: colors.accent }]} />
-        <View style={[styles.heroCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View style={[styles.heroCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <View style={[styles.heroImagePlaceholder, { backgroundColor: colors.map }]}>
             <View style={[styles.heroRoad, { backgroundColor: colors.mapLine }]} />
             <View style={[styles.heroCar, { backgroundColor: colors.primary }]}>
               <Icon name="navigation" size={18} color={colors.primaryForeground} />
             </View>
-            <View style={[styles.heroBadge, { backgroundColor: colors.card }]}>
+            <View style={[styles.heroBadge, { backgroundColor: colors.background }]}>
               <Icon name="shield" size={13} color={colors.success} />
               <Text style={[styles.tinyText, { color: colors.foreground }]}>Verified, always</Text>
             </View>
@@ -259,7 +259,7 @@ function VerifyScreen() {
 
 function VerificationItem({ icon, title, subtitle, colors, muted }: { icon: keyof typeof Feather.glyphMap; title: string; subtitle: string; colors: ReturnType<typeof useColors>; muted?: boolean }) {
   return (
-    <View style={[styles.verifyItem, { borderColor: colors.border, backgroundColor: colors.card }]}>
+    <View style={[styles.verifyItem, { borderColor: colors.border, backgroundColor: colors.background }]}>
       <View style={[styles.verifyIcon, { backgroundColor: muted ? colors.input : colors.accent }]}>
         <Icon name={icon} size={19} color={muted ? colors.mutedForeground : colors.success} />
       </View>
@@ -305,7 +305,7 @@ function HomeScreen() {
       <View style={[styles.homeSheet, { backgroundColor: colors.background, paddingBottom: insets.bottom + 86 }]}>
         <View style={[styles.sheetHandle, { backgroundColor: colors.border }]} />
         <Text style={[styles.sectionEyebrow, { color: colors.primary }]}>YOUR NEXT TRIP</Text>
-        <Pressable onPress={() => press(() => setScreen('search'))} style={[styles.destinationCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Pressable onPress={() => press(() => setScreen('search'))} style={[styles.destinationCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <View style={[styles.routeDot, { backgroundColor: colors.success }]} />
           <View style={styles.routeLine} />
           <View style={[styles.routeDot, { backgroundColor: colors.primary }]} />
@@ -387,7 +387,7 @@ function SearchScreen() {
       </View>
       <Text style={[styles.sectionTitle, { color: colors.foreground }]}>Suggested places</Text>
       <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 30 }} showsVerticalScrollIndicator={false}>
-        <Pressable onPress={() => { setDestination('Current location'); setQuery('Current location'); }} style={[styles.currentLocation, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <Pressable onPress={() => { setDestination('Current location'); setQuery('Current location'); }} style={[styles.currentLocation, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <View style={[styles.iconCircle, { backgroundColor: colors.accent }]}><Icon name="crosshair" size={17} color={colors.success} /></View>
           <View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Use current location</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}>Pickup: Lagos Island</Text></View>
           <Icon name="chevron-right" size={18} color={colors.mutedForeground} />
@@ -433,7 +433,7 @@ function DriversScreen() {
 function DriverCard({ driver, colors, onPress }: { driver: Driver; colors: ReturnType<typeof useColors>; onPress: () => void }) {
   const { showToast } = useDraba();
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.driverCard, { backgroundColor: colors.card, borderColor: colors.border, opacity: pressed ? 0.84 : 1 }]}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.driverCard, { backgroundColor: colors.background, borderColor: colors.border, opacity: pressed ? 0.84 : 1 }]}>
       <View style={[styles.driverPhoto, { backgroundColor: driver.accent }]}>
         <Text style={[styles.driverInitials, { color: colors.foreground }]}>{driver.initials}</Text>
         <View style={[styles.onlineDot, { backgroundColor: colors.success, borderColor: colors.card }]} />
@@ -461,7 +461,7 @@ function BookingScreen() {
         <Pressable onPress={() => press(() => setTrustOpen(true))}><Icon name="shield" size={20} color={colors.success} /></Pressable>
       </View>
       <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: insets.bottom + 120 }} showsVerticalScrollIndicator={false}>
-        <View style={[styles.featureDriver, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View style={[styles.featureDriver, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <View style={[styles.largePhoto, { backgroundColor: selectedDriver.accent }]}><Text style={[styles.largeInitials, { color: colors.foreground }]}>{selectedDriver.initials}</Text></View>
           <Text style={[styles.displayName, { color: colors.foreground }]}>{selectedDriver.name}</Text>
           <View style={styles.centerRow}><Text style={[styles.caption, { color: colors.warning }]}>★ {selectedDriver.rating}</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}> · {selectedDriver.trips} completed trips</Text></View>
@@ -471,7 +471,7 @@ function BookingScreen() {
           <Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 16 }]}>{selectedDriver.bio}</Text>
         </View>
         <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 26 }]}>Trip estimate</Text>
-        <View style={[styles.estimateCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View style={[styles.estimateCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <EstimateRow label="Pickup" value="Lagos Island" icon="circle" colors={colors} />
           <EstimateRow label="Destination" value={destination || 'Jabi Lake Mall'} icon="map-pin" colors={colors} />
           <View style={[styles.divider, { backgroundColor: colors.border }]} />
@@ -502,7 +502,7 @@ function TrustModal({ visible, onClose, driver, colors }: { visible: boolean; on
           <Text style={[styles.sectionEyebrow, { color: colors.primary }]}>TRUST PROFILE</Text>
           <View style={styles.trustHero}><View style={[styles.trustRing, { borderColor: colors.success }]}><Text style={[styles.trustNumber, { color: colors.foreground }]}>{driver.trust}</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>/100</Text></View><View><Text style={[styles.authTitleSmall, { color: colors.foreground }]}>{driver.name}</Text><Text style={[styles.caption, { color: colors.success }]}>Elite verified</Text></View></View>
           <View style={styles.trustGrid}><TrustMetric label="Identity" value="Verified" icon="user-check" colors={colors} /><TrustMetric label="Reliability" value="98%" icon="clock" colors={colors} /><TrustMetric label="Experience" value="8 years" icon="award" colors={colors} /><TrustMetric label="Professionalism" value="96%" icon="briefcase" colors={colors} /></View>
-          <View style={[styles.trustNote, { backgroundColor: colors.card, borderColor: colors.border }]}><Icon name="shield" size={17} color={colors.success} /><Text style={[styles.caption, { color: colors.mutedForeground, flex: 1 }]}>Verified by Draba with identity, license, and face verification. {driver.trips} successful trips.</Text></View>
+          <View style={[styles.trustNote, { backgroundColor: colors.background, borderColor: colors.border }]}><Icon name="shield" size={17} color={colors.success} /><Text style={[styles.caption, { color: colors.mutedForeground, flex: 1 }]}>Verified by Draba with identity, license, and face verification. {driver.trips} successful trips.</Text></View>
           <PrimaryButton label="Done" onPress={onClose} colors={colors} />
         </View>
       </View>
@@ -511,7 +511,7 @@ function TrustModal({ visible, onClose, driver, colors }: { visible: boolean; on
 }
 
 function TrustMetric({ label, value, icon, colors }: { label: string; value: string; icon: keyof typeof Feather.glyphMap; colors: ReturnType<typeof useColors> }) {
-  return <View style={[styles.metric, { backgroundColor: colors.card, borderColor: colors.border }]}><Icon name={icon} size={16} color={colors.primary} /><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>{label}</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>{value}</Text></View>;
+  return <View style={[styles.metric, { backgroundColor: colors.background, borderColor: colors.border }]}><Icon name={icon} size={16} color={colors.primary} /><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>{label}</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>{value}</Text></View>;
 }
 
 function TrackingScreen() {
@@ -522,6 +522,7 @@ function TrackingScreen() {
     searching: ['Searching for the best driver', 'The usually takes less than 30 seconds.'],
     accepted: [`${selectedDriver.name} accepted`, 'Your driver is on the way.'],
     arriving: ['Your driver is arriving', `${selectedDriver.name} is 2 minutes away.`],
+    arrived: ['Your driver has arrived', `${selectedDriver.name} is waiting at your pickup point.`],
     started: ['Trip in progress', `You’re on your way to your destination.`],
     completed: ['Trip completed', 'Thanks for riding with Draba.'],
   }[tripStage];
@@ -540,10 +541,10 @@ function TrackingScreen() {
         <RoundIconButton name="more-horizontal" onPress={() => press(() => showToast('Trip options'))} colors={colors} />
       </View>
       <View style={[styles.trackingCard, { backgroundColor: colors.background, paddingBottom: insets.bottom + 18 }]}>
-        <View style={styles.progressTrack}>{['searching', 'accepted', 'arriving', 'started'].map((stage, index) => <View key={stage} style={[styles.progressSegment, { backgroundColor: ['searching', 'accepted', 'arriving', 'started'].indexOf(tripStage) >= index ? colors.primary : colors.input }]} />)}</View>
+        <View style={styles.progressTrack}>{['searching', 'accepted', 'arriving', 'arrived', 'started'].map((stage, index) => <View key={stage} style={[styles.progressSegment, { backgroundColor: ['searching', 'accepted', 'arriving', 'arrived', 'started'].indexOf(tripStage) >= index ? colors.primary : colors.input }]} />)}</View>
         <Text style={[styles.authTitleSmall, { color: colors.foreground, marginTop: 20 }]}>{stageCopy[0]}</Text>
         <Text style={[styles.body, { color: colors.mutedForeground, marginTop: 6 }]}>{stageCopy[1]}</Text>
-        <View style={[styles.trackingDriver, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View style={[styles.trackingDriver, { backgroundColor: colors.background, borderColor: colors.border }]}>
           <View style={[styles.driverPhotoSmall, { backgroundColor: selectedDriver.accent }]}><Text style={[styles.driverInitialsSmall, { color: colors.foreground }]}>{selectedDriver.initials}</Text></View>
           <View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{selectedDriver.name}</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}>Toyota Camry · ABC 123 XY</Text></View>
           <View style={{ alignItems: 'flex-end' }}><Text style={[styles.caption, { color: colors.warning }]}>★ {selectedDriver.rating}</Text><Text style={[styles.caption, { color: colors.success }]}>Trust {selectedDriver.trust}%</Text></View>
@@ -564,7 +565,7 @@ function CompleteScreen() {
     <View style={[styles.screen, { backgroundColor: colors.background, paddingHorizontal: 24, paddingTop: insets.top + 28, paddingBottom: insets.bottom + 16 }]}>
       <View style={styles.completeTop}><Text style={[styles.sectionEyebrow, { color: colors.primary }]}>TRIP COMPLETED</Text><Pressable onPress={() => press(() => setScreen('home'))}><Icon name="x" size={20} color={colors.mutedForeground} /></Pressable></View>
       <View style={styles.completeHero}><View style={[styles.successCircle, { backgroundColor: colors.success }]}><Icon name="check" size={44} color={colors.background} strokeWidth={3} /></View><Text style={[styles.displayTitle, { color: colors.foreground, textAlign: 'center', marginTop: 24 }]}>You arrived safely.</Text><Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 8 }]}>Your payment was processed securely through Paystack.</Text></View>
-      <View style={[styles.receiptCard, { backgroundColor: colors.card, borderColor: colors.border }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Trip fare</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>₦7,200</Text></View><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Payment method</Text><Text style={[styles.caption, { color: colors.foreground }]}>Visa · 4242</Text></View><View style={[styles.divider, { backgroundColor: colors.border }]} /><View style={styles.rowBetween}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Total paid</Text><Text style={[styles.estimateAmount, { color: colors.success }]}>₦7,200</Text></View></View>
+      <View style={[styles.receiptCard, { backgroundColor: colors.background, borderColor: colors.border }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Trip fare</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>₦7,200</Text></View><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Payment method</Text><Text style={[styles.caption, { color: colors.foreground }]}>Visa · 4242</Text></View><View style={[styles.divider, { backgroundColor: colors.border }]} /><View style={styles.rowBetween}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Total paid</Text><Text style={[styles.estimateAmount, { color: colors.success }]}>₦7,200</Text></View></View>
       <View style={styles.ratingWrap}><Text style={[styles.cardTitle, { color: colors.foreground, textAlign: 'center' }]}>How was your trip?</Text><View style={styles.stars}>{[1, 2, 3, 4, 5].map((star) => <Pressable key={star} onPress={() => press(() => setRating(star))}><Icon name="star" size={30} color={star <= rating ? colors.warning : colors.input} /></Pressable>)}</View></View>
       <View style={styles.bottomCta}><PrimaryButton label="Submit rating" onPress={() => press(() => { showToast('Thanks for keeping Draba trusted'); setScreen('home'); })} colors={colors} disabled={rating === 0} /><Pressable onPress={() => press(() => setScreen('home'))} style={styles.ghostButton}><Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Maybe later</Text></Pressable></View>
     </View>
@@ -579,7 +580,7 @@ function TripsScreen() {
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <PageHeader title="Your trips" subtitle="Every journey, in one place" onBack={() => setScreen('home')} colors={colors} />
       <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 8, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
-        <View style={[styles.upcomingCard, { backgroundColor: colors.accent, borderColor: colors.accent }]}><View style={styles.rowBetween}><View><Text style={[styles.sectionEyebrow, { color: colors.accentForeground }]}>UPCOMING</Text><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 6 }]}>Plan a safe trip</Text></View><Icon name="calendar" size={20} color={colors.accentForeground} /></View><Text style={[styles.caption, { color: colors.accentForeground, marginTop: 16 }]}>Book a verified driver whenever you need one.</Text><Pressable onPress={() => press(() => setScreen('search'))} style={[styles.smallCta, { backgroundColor: colors.foreground }]}><Text style={[styles.caption, { color: colors.background }]}>Book a driver</Text><Icon name="arrow-up-right" size={14} color={colors.background} /></Pressable></View>
+        <View style={[styles.upcomingCard, { backgroundColor: colors.background, borderColor: colors.border }]}><View style={styles.rowBetween}><View><Text style={[styles.sectionEyebrow, { color: colors.primary }]}>UPCOMING</Text><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 6 }]}>Plan a safe trip</Text></View><Icon name="calendar" size={20} color={colors.primary} /></View><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 16 }]}>Book a verified driver whenever you need one.</Text><Pressable onPress={() => press(() => setScreen('search'))} style={[styles.smallCta, { backgroundColor: colors.primary }]}><Text style={[styles.caption, { color: colors.primaryForeground }]}>Book a driver</Text><Icon name="arrow-up-right" size={14} color={colors.primaryForeground} /></Pressable></View>
         <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 26 }]}>Recent trips</Text>
         {trips.map((trip) => <TripRow key={trip.id} trip={trip} colors={colors} />)}
       </ScrollView>
@@ -600,7 +601,7 @@ function WalletScreen() {
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <PageHeader title="Wallet" subtitle="Simple, secure payments" onBack={() => setScreen('home')} colors={colors} />
       <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 8, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
-        <View style={[styles.balanceCard, { backgroundColor: colors.primary }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.primaryForeground, opacity: 0.8 }]}>AVAILABLE BALANCE</Text><Icon name="more-horizontal" size={19} color={colors.primaryForeground} /></View><Text style={[styles.balanceAmount, { color: colors.primaryForeground }]}>₦38,420</Text><Text style={[styles.caption, { color: colors.primaryForeground, opacity: 0.8 }]}>•••• 4242 · Paystack secured</Text><View style={styles.walletActions}><Pressable onPress={() => press(() => showToast('Top up flow opened'))} style={[styles.walletAction, { backgroundColor: colors.primaryForeground }]}><Icon name="plus" size={16} color={colors.primary} /><Text style={[styles.caption, { color: colors.primary }]}>Top up</Text></Pressable><Pressable onPress={() => press(() => showToast('Payment methods opened'))} style={[styles.walletAction, { backgroundColor: colors.primaryForeground + '33' }]}><Icon name="credit-card" size={16} color={colors.primaryForeground} /><Text style={[styles.caption, { color: colors.primaryForeground }]}>Methods</Text></Pressable></View></View>
+        <View style={[styles.balanceCard, { backgroundColor: colors.background, borderColor: colors.border }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>AVAILABLE BALANCE</Text><Icon name="more-horizontal" size={19} color={colors.mutedForeground} /></View><Text style={[styles.balanceAmount, { color: colors.foreground }]}>₦38,420</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}>•••• 4242 · Paystack secured</Text><View style={styles.walletActions}><Pressable onPress={() => press(() => showToast('Top up flow opened'))} style={[styles.walletAction, { backgroundColor: colors.primary }]}><Icon name="plus" size={16} color={colors.primaryForeground} /><Text style={[styles.caption, { color: colors.primaryForeground }]}>Top up</Text></Pressable><Pressable onPress={() => press(() => showToast('Payment methods opened'))} style={[styles.walletAction, { backgroundColor: colors.input }]}><Icon name="credit-card" size={16} color={colors.foreground} /><Text style={[styles.caption, { color: colors.foreground }]}>Methods</Text></Pressable></View></View>
         <View style={styles.rowBetween}><Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 26 }]}>Activity</Text><Text style={[styles.linkText, { color: colors.primary, marginTop: 26 }]}>See all</Text></View>
         {transactions.map((transaction) => <View key={transaction.id} style={[styles.transactionRow, { borderBottomColor: colors.border }]}><View style={[styles.iconCircle, { backgroundColor: transaction.type === 'credit' ? colors.accent : colors.input }]}><Icon name={transaction.type === 'credit' ? 'arrow-down-left' : 'navigation'} size={16} color={transaction.type === 'credit' ? colors.success : colors.primary} /></View><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{transaction.label}</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>{transaction.date}</Text></View><Text style={[styles.cardTitle, { color: transaction.type === 'credit' ? colors.success : colors.foreground }]}>{transaction.amount}</Text></View>)}
       </ScrollView>
@@ -617,7 +618,7 @@ function InboxScreen() {
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
       <PageHeader title="Inbox" subtitle="Your updates and receipts" onBack={() => setScreen('home')} colors={colors} />
       <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 8, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
-        {messages.map((message) => <Pressable key={message.id} onPress={() => press(() => showToast('Message marked as read'))} style={[styles.messageRow, { backgroundColor: colors.card, borderColor: colors.border }]}><View style={[styles.iconCircle, { backgroundColor: message.unread ? colors.accent : colors.input }]}><Icon name={message.icon as keyof typeof Feather.glyphMap} size={17} color={message.unread ? colors.success : colors.mutedForeground} /></View><View style={styles.flex}><View style={styles.rowBetween}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{message.title}</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>{message.time}</Text></View><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 4 }]}>{message.body}</Text></View>{message.unread ? <View style={[styles.unreadDot, { backgroundColor: colors.primary }]} /> : null}</Pressable>)}
+        {messages.map((message) => <Pressable key={message.id} onPress={() => press(() => showToast('Message marked as read'))} style={[styles.messageRow, { backgroundColor: colors.background, borderColor: colors.border }]}><View style={[styles.iconCircle, { backgroundColor: message.unread ? colors.accent : colors.input }]}><Icon name={message.icon as keyof typeof Feather.glyphMap} size={17} color={message.unread ? colors.success : colors.mutedForeground} /></View><View style={styles.flex}><View style={styles.rowBetween}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{message.title}</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>{message.time}</Text></View><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 4 }]}>{message.body}</Text></View>{message.unread ? <View style={[styles.unreadDot, { backgroundColor: colors.primary }]} /> : null}</Pressable>)}
         <View style={styles.emptySafety}><Icon name="shield" size={22} color={colors.success} /><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 10 }]}>Your safety comes first</Text><Text style={[styles.caption, { color: colors.mutedForeground, textAlign: 'center', marginTop: 5 }]}>SOS, trip sharing, and support are available from every trip.</Text></View>
       </ScrollView>
       <BottomNav active="inbox" colors={colors} />
@@ -750,10 +751,10 @@ const styles = StyleSheet.create({
   searchPlaceholder: { fontSize: 14, fontWeight: '600' },
   searchSubtext: { fontSize: 10, marginTop: 3 },
   locateButton: { position: 'absolute', right: 20, width: 44, height: 44, borderRadius: 15, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
-  homeSheet: { position: 'absolute', left: 0, right: 0, bottom: 0, minHeight: SCREEN_HEIGHT * 0.31, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingHorizontal: 20, paddingTop: 12 },
+  homeSheet: { position: 'absolute', left: 0, right: 0, bottom: 0, minHeight: SCREEN_HEIGHT * 0.31, paddingHorizontal: 20, paddingTop: 12 },
   sheetHandle: { width: 38, height: 4, borderRadius: 2, alignSelf: 'center', marginBottom: 18 },
   sectionEyebrow: { fontSize: 10, fontWeight: '700', letterSpacing: 1.3 },
-  destinationCard: { marginTop: 11, borderRadius: 17, borderWidth: 1, padding: 14, flexDirection: 'row', alignItems: 'center' },
+  destinationCard: { marginTop: 11, borderBottomWidth: 1, paddingVertical: 14, flexDirection: 'row', alignItems: 'center' },
   routeDot: { width: 9, height: 9, borderRadius: 5, marginRight: 12 },
   routeLine: { position: 'absolute', left: 18, top: 28, height: 25, width: 1, backgroundColor: '#294355' },
   routeLabels: { flex: 1 },
@@ -767,15 +768,15 @@ const styles = StyleSheet.create({
   searchHeader: { paddingHorizontal: 20, paddingBottom: 12, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
   searchInputLarge: { margin: 20, marginBottom: 24, minHeight: 56, borderRadius: 17, borderWidth: 1, paddingHorizontal: 14, flexDirection: 'row', alignItems: 'center', gap: 8 },
   sectionTitle: { fontSize: 19, fontWeight: '700', letterSpacing: -0.3 },
-  currentLocation: { marginHorizontal: 20, padding: 14, borderRadius: 17, borderWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  currentLocation: { marginHorizontal: 20, paddingVertical: 14, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
   suggestionRow: { marginHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#1B3446', flexDirection: 'row', alignItems: 'center', gap: 12 },
   compactHeader: { paddingHorizontal: 20, paddingBottom: 12, flexDirection: 'row', alignItems: 'center', gap: 9 },
   linkText: { fontSize: 13, fontWeight: '600' },
   driverMap: { height: SCREEN_HEIGHT * 0.29, overflow: 'hidden' },
-  driverList: { flex: 1, borderTopLeftRadius: 27, borderTopRightRadius: 27, paddingHorizontal: 20, paddingTop: 20 },
+  driverList: { flex: 1, paddingHorizontal: 20, paddingTop: 20 },
   rowBetween: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   filterPill: { paddingHorizontal: 11, paddingVertical: 8, borderRadius: 12, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  driverCard: { borderRadius: 19, borderWidth: 1, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  driverCard: { borderBottomWidth: 1, paddingVertical: 13, flexDirection: 'row', alignItems: 'center', gap: 12 },
   driverPhoto: { width: 56, height: 70, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
   driverInitials: { fontSize: 17, fontWeight: '700' },
   onlineDot: { position: 'absolute', width: 10, height: 10, borderRadius: 5, right: -2, top: -2, borderWidth: 2 },
@@ -785,12 +786,12 @@ const styles = StyleSheet.create({
   driverStats: { flexDirection: 'row', gap: 9 },
   trustLine: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   priceText: { fontSize: 14, fontWeight: '700' },
-  featureDriver: { borderRadius: 24, borderWidth: 1, padding: 20, alignItems: 'center' },
+  featureDriver: { borderBottomWidth: 1, paddingBottom: 24, alignItems: 'center' },
   largePhoto: { width: 94, height: 108, borderRadius: 26, alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
   largeInitials: { fontSize: 27, fontWeight: '700' },
   centerRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
   trustScorePill: { paddingHorizontal: 13, paddingVertical: 9, borderRadius: 12, marginTop: 15, flexDirection: 'row', alignItems: 'center', gap: 6 },
-  estimateCard: { borderRadius: 19, borderWidth: 1, padding: 16, marginTop: 12, gap: 15 },
+  estimateCard: { borderBottomWidth: 1, paddingVertical: 16, marginTop: 12, gap: 15 },
   estimateRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   divider: { height: 1, marginVertical: 1 },
   estimateAmount: { fontSize: 17, fontWeight: '700' },
@@ -803,15 +804,15 @@ const styles = StyleSheet.create({
   trustRing: { width: 84, height: 84, borderRadius: 42, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
   trustNumber: { fontSize: 26, fontWeight: '700' },
   trustGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 9, marginTop: 20 },
-  metric: { width: '48%', borderRadius: 15, borderWidth: 1, padding: 12, gap: 6 },
+  metric: { width: '48%', borderBottomWidth: 1, paddingVertical: 12, gap: 6 },
   trustNote: { borderRadius: 15, borderWidth: 1, padding: 12, flexDirection: 'row', gap: 9, marginVertical: 17 },
   trackingTop: { position: 'absolute', top: 0, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   livePill: { borderRadius: 13, paddingHorizontal: 12, paddingVertical: 9, flexDirection: 'row', alignItems: 'center', gap: 6 },
   pulseDot: { width: 7, height: 7, borderRadius: 4 },
-  trackingCard: { position: 'absolute', left: 0, right: 0, bottom: 0, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingHorizontal: 20, paddingTop: 16 },
+  trackingCard: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 16 },
   progressTrack: { flexDirection: 'row', gap: 5 },
   progressSegment: { flex: 1, height: 4, borderRadius: 2 },
-  trackingDriver: { borderRadius: 17, borderWidth: 1, padding: 12, marginTop: 18, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  trackingDriver: { borderBottomWidth: 1, paddingVertical: 12, marginTop: 18, flexDirection: 'row', alignItems: 'center', gap: 10 },
   driverPhotoSmall: { width: 45, height: 52, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
   driverInitialsSmall: { fontSize: 14, fontWeight: '700' },
   tripActions: { flexDirection: 'row', gap: 8, marginTop: 13 },
@@ -820,19 +821,19 @@ const styles = StyleSheet.create({
   completeTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   completeHero: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   successCircle: { width: 92, height: 92, borderRadius: 46, alignItems: 'center', justifyContent: 'center' },
-  receiptCard: { borderRadius: 18, borderWidth: 1, padding: 17, gap: 14 },
+  receiptCard: { borderBottomWidth: 1, paddingVertical: 17, gap: 14 },
   ratingWrap: { paddingTop: 24 },
   stars: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginTop: 12 },
   pageHeader: { paddingHorizontal: 20, paddingBottom: 16, flexDirection: 'row', alignItems: 'center', gap: 9 },
-  upcomingCard: { borderRadius: 21, padding: 18, minHeight: 157 },
+  upcomingCard: { borderBottomWidth: 1, paddingVertical: 18, minHeight: 157 },
   smallCta: { alignSelf: 'flex-start', marginTop: 16, borderRadius: 11, paddingHorizontal: 11, paddingVertical: 9, flexDirection: 'row', gap: 7, alignItems: 'center' },
   tripRow: { paddingVertical: 17, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 12 },
-  balanceCard: { borderRadius: 23, padding: 19, minHeight: 197 },
+  balanceCard: { borderBottomWidth: 1, paddingVertical: 19, minHeight: 197 },
   balanceAmount: { fontSize: 34, fontWeight: '700', letterSpacing: -1, marginTop: 20, marginBottom: 5 },
   walletActions: { flexDirection: 'row', gap: 9, marginTop: 20 },
   walletAction: { borderRadius: 11, paddingHorizontal: 11, paddingVertical: 8, flexDirection: 'row', alignItems: 'center', gap: 6 },
   transactionRow: { paddingVertical: 15, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 11 },
-  messageRow: { padding: 14, borderRadius: 18, borderWidth: 1, flexDirection: 'row', alignItems: 'flex-start', gap: 11, marginBottom: 10 },
+  messageRow: { paddingVertical: 14, borderBottomWidth: 1, flexDirection: 'row', alignItems: 'flex-start', gap: 11 },
   unreadDot: { width: 7, height: 7, borderRadius: 4, marginTop: 6 },
   emptySafety: { alignItems: 'center', padding: 30, marginTop: 15 },
   profileHero: { alignItems: 'center', paddingVertical: 14 },
