@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "Draba Driver Marketplace"
+description = "A premium driver-on-demand mobile marketplace where clients book verified professional drivers to drive their own vehicles. Includes a complete mock booking journey from secure onboarding through live trip tracking, payment, and rating."
+version = "1.0.0"
+id = "artifacts/draba"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 22394
+
+[services.development]
+run = "pnpm --filter @workspace/draba run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/draba", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/draba", "run", "serve" ]
+
+[services.env]
+PORT = "22394"
+BASE_PATH = "/"

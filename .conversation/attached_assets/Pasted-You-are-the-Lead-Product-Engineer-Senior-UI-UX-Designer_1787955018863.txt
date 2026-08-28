@@ -1,0 +1,601 @@
+You are the Lead Product Engineer, Senior UI/UX Designer, and Marketplace Architect responsible for building a working MVP prototype of Draba.
+
+## PRODUCT
+
+Draba is a Driver-on-Demand Marketplace.
+
+It is NOT a ride-hailing app.
+
+Clients own the vehicle.
+
+Professional drivers drive the client's vehicle.
+
+The platform connects verified drivers with clients.
+
+Trust, professionalism and safety are the foundation of every interaction.
+
+The prototype should feel like a production application rather than a design mockup.
+
+The goal is to build a clickable, functional prototype that can later be connected to an Express backend with minimal refactoring.
+
+----------------------------------------------------
+
+TECH STACK
+
+React Native
+
+Expo SDK (latest stable)
+
+Expo Router
+
+TypeScript
+
+NativeWind
+
+React Query
+
+Zustand
+
+React Hook Form
+
+React Native Reanimated
+
+React Native Gesture Handler
+
+React Native Maps
+
+Expo Location
+
+Expo Notifications
+
+Socket.IO Client (mock)
+
+----------------------------------------------------
+
+BACKEND
+
+The backend does not exist yet.
+
+Create a Mock API layer.
+
+Create repositories.
+
+Create services.
+
+Create realistic JSON data.
+
+Create API abstraction so the mock services can later be replaced with Express endpoints without changing UI components.
+
+Never hardcode data directly inside screens.
+
+----------------------------------------------------
+
+ARCHITECTURE
+
+Follow feature-first architecture.
+
+Example
+
+/features
+
+/auth
+
+/booking
+
+/driver
+
+/trips
+
+/trust
+
+/profile
+
+/payments
+
+/wallet
+
+/chat
+
+/notifications
+
+/settings
+
+Each feature should contain
+
+components
+
+hooks
+
+types
+
+services
+
+screens
+
+api
+
+----------------------------------------------------
+
+DESIGN SYSTEM
+
+Build reusable components first.
+
+Button
+
+Card
+
+BottomSheet
+
+DriverCard
+
+Avatar
+
+MapMarker
+
+SearchField
+
+Input
+
+Badge
+
+TrustRing
+
+TrustBadge
+
+TripCard
+
+MetricCard
+
+Skeleton
+
+Modal
+
+LoadingState
+
+ErrorState
+
+EmptyState
+
+Toast
+
+Never duplicate components.
+
+----------------------------------------------------
+
+DESIGN LANGUAGE
+
+Premium.
+
+Modern.
+
+Minimal.
+
+Apple-level polish.
+
+Uber simplicity.
+
+Stripe consistency.
+
+Airbnb trust.
+
+Use rounded corners.
+
+Floating cards.
+
+Soft shadows.
+
+Beautiful spacing.
+
+Rich typography.
+
+Dark mode.
+
+Smooth animations.
+
+----------------------------------------------------
+
+AUTH FLOW
+
+Splash
+
+↓
+
+Onboarding
+
+↓
+
+Login
+
+↓
+
+OTP
+
+↓
+
+Complete Profile
+
+↓
+
+Verification
+
+↓
+
+Home
+
+All fully functional with mock authentication.
+
+----------------------------------------------------
+
+CLIENT HOME
+
+The Home screen is map-driven.
+
+The map fills almost the entire screen.
+
+Features
+
+Current Location
+
+Nearby Drivers
+
+Driver Markers
+
+Traffic style
+
+Locate Me button
+
+Notifications
+
+Profile shortcut
+
+Wallet shortcut
+
+Floating search field positioned around the middle of the screen.
+
+Pickup is automatically detected.
+
+User can manually edit pickup.
+
+Field includes:
+
+Current location icon
+
+Clear button
+
+Voice search placeholder
+
+Search destination
+
+Google Places mock suggestions
+
+Bottom Navigation
+
+Home
+
+Trips
+
+Wallet
+
+Inbox
+
+Profile
+
+----------------------------------------------------
+
+BOOKING FLOW
+
+Search destination
+
+↓
+
+Load nearby drivers
+
+↓
+
+Display driver cards
+
+↓
+
+Tap driver
+
+↓
+
+Bottom sheet opens
+
+↓
+
+Driver summary
+
+↓
+
+Trip estimate
+
+↓
+
+Book Driver
+
+↓
+
+Searching animation
+
+↓
+
+Driver accepted
+
+↓
+
+Driver tracking
+
+↓
+
+Trip started
+
+↓
+
+Trip completed
+
+↓
+
+Payment
+
+↓
+
+Rating
+
+Everything must be clickable.
+
+Every state must be simulated.
+
+----------------------------------------------------
+
+DRIVER CARD
+
+Each driver card displays
+
+Photo
+
+Name
+
+Trust Score
+
+Premium badge
+
+Rating
+
+Trips
+
+Distance away
+
+ETA
+
+Price per minute
+
+Book button
+
+Trust button
+
+----------------------------------------------------
+
+TRUST PROFILE
+
+When Trust Score is tapped
+
+Open a premium Bottom Sheet.
+
+Display
+
+Trust Score
+
+Trust Level
+
+Identity
+
+Reliability
+
+Customer Rating
+
+Experience
+
+Professionalism
+
+Awards
+
+Verification
+
+Completed Trips
+
+Ratings
+
+Everything uses mock data.
+
+----------------------------------------------------
+
+DRIVER APP
+
+Build separately.
+
+Dashboard
+
+Go Online
+
+Receive Request
+
+Countdown
+
+Accept
+
+Reject
+
+Navigate
+
+Arrive
+
+Start Trip
+
+End Trip
+
+Wallet
+
+Trust Score
+
+Performance
+
+Profile
+
+All simulated.
+
+----------------------------------------------------
+
+ADMIN
+
+Simple responsive web dashboard.
+
+Live trips
+
+Online drivers
+
+Revenue
+
+Trust Engine
+
+Users
+
+Disputes
+
+SOS
+
+Verification queue
+
+----------------------------------------------------
+
+REAL-TIME SIMULATION
+
+Simulate Socket.IO.
+
+When client books
+
+Automatically generate
+
+Driver receives request
+
+Driver accepts
+
+Driver moves toward pickup
+
+Driver arrives
+
+Trip starts
+
+Driver moves
+
+Trip completes
+
+Client confirms
+
+Payment succeeds
+
+Ratings submitted
+
+Everything should animate.
+
+----------------------------------------------------
+
+MAPS
+
+Use realistic map markers.
+
+Driver markers move.
+
+Route polylines animate.
+
+Camera follows driver during trip.
+
+----------------------------------------------------
+
+PAYMENTS
+
+Simulate Paystack.
+
+Mock
+
+Split payment
+
+Wallet update
+
+Receipt
+
+Transaction history
+
+----------------------------------------------------
+
+VERIFICATION
+
+Simulate Dojah.
+
+Driver
+
+NIN
+
+Driver License
+
+Face Verification
+
+Client
+
+NIN
+
+Face Verification
+
+Show successful verification states.
+
+----------------------------------------------------
+
+ANIMATIONS
+
+Every interaction should animate.
+
+Bottom sheets.
+
+Cards.
+
+Loading.
+
+Driver movement.
+
+Trust Score.
+
+Search.
+
+Booking.
+
+Payment.
+
+Receipts.
+
+----------------------------------------------------
+
+PROTOTYPE REQUIREMENTS
+
+Every button must perform an action.
+
+Every screen must connect logically to another.
+
+No dead ends.
+
+No placeholder text like "Coming Soon."
+
+No lorem ipsum.
+
+Use realistic Nigerian names, cities, and addresses.
+
+Generate realistic drivers, reviews, trips, and booking history.
+
+----------------------------------------------------
+
+SUCCESS
+
+At the end, the application should behave like a real Driver-on-Demand marketplace.
+
+A user should be able to complete an entire booking journey from login to payment using only mock data, without encountering unfinished screens or broken navigation.
+
+Build it as if it were going live tomorrow, while ensuring every API interaction is abstracted through services that can later be connected to an Express backend.
