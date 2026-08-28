@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Animated,
   Dimensions,
+  Easing,
   FlatList,
   Keyboard,
   Modal,
@@ -40,11 +41,6 @@ function App() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const { screen, setScreen, tripStage, setTripStage, toast } = useDraba();
-  const fade = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(fade, { toValue: 1, duration: 500, useNativeDriver: true }).start();
-  }, [fade, screen]);
 
   useEffect(() => {
     if (screen !== 'splash') return;
@@ -85,10 +81,72 @@ function App() {
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <Animated.View style={[styles.flex, { opacity: fade }]}>
-        {screenContent}
-      </Animated.View>
+      <ScreenTransition screen={screen} content={screenContent} />
       {toast ? <Toast message={toast} colors={colors} bottom={insets.bottom + 92} /> : null}
+    </View>
+  );
+}
+
+function ScreenTransition({ screen, content }: { screen: string; content: React.ReactNode }) {
+  const [renderedContent, setRenderedContent] = useState<React.ReactNode>(content);
+  const [outgoingContent, setOutgoingContent] = useState<React.ReactNode>(null);
+  const useNativeDriver = Platform.OS !== 'web';
+  const currentContent = useRef(content);
+  const currentScreen = useRef(screen);
+  const incomingOpacity = useRef(new Animated.Value(1)).current;
+  const incomingTranslateY = useRef(new Animated.Value(0)).current;
+  const outgoingOpacity = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (currentScreen.current === screen) return;
+
+    setOutgoingContent(currentContent.current);
+    setRenderedContent(content);
+    currentContent.current = content;
+    currentScreen.current = screen;
+
+    incomingOpacity.stopAnimation();
+    incomingTranslateY.stopAnimation();
+    outgoingOpacity.stopAnimation();
+    incomingOpacity.setValue(0);
+    incomingTranslateY.setValue(12);
+    outgoingOpacity.setValue(1);
+
+    Animated.parallel([
+      Animated.timing(incomingOpacity, {
+        toValue: 1,
+        duration: 420,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver,
+      }),
+      Animated.spring(incomingTranslateY, {
+        toValue: 0,
+        damping: 22,
+        stiffness: 170,
+        mass: 0.85,
+        useNativeDriver,
+      }),
+      Animated.timing(outgoingOpacity, {
+        toValue: 0,
+        duration: 240,
+        easing: Easing.inOut(Easing.quad),
+        useNativeDriver,
+      }),
+    ]).start(({ finished }) => {
+      if (finished) setOutgoingContent(null);
+    });
+  }, [content, incomingOpacity, incomingTranslateY, outgoingOpacity, screen]);
+
+  return (
+    <View style={styles.flex}>
+      {outgoingContent ? (
+        <Animated.View style={[styles.transitionLayer, { opacity: outgoingOpacity, pointerEvents: 'none' }]}>
+          {outgoingContent}
+        </Animated.View>
+      ) : null}
+      <Animated.View style={[styles.flex, { opacity: incomingOpacity, transform: [{ translateY: incomingTranslateY }] }]}>
+        {renderedContent}
+      </Animated.View>
     </View>
   );
 }
@@ -692,6 +750,7 @@ export default function Index() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   flex: { flex: 1 },
+  transitionLayer: { ...StyleSheet.absoluteFillObject },
   screen: { flex: 1 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   brand: { fontSize: 22, fontWeight: '700', letterSpacing: 3, marginTop: 18 },
