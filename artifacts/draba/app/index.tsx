@@ -7,6 +7,7 @@ import {
   FlatList,
   Keyboard,
   Modal,
+  PanResponder,
   Platform,
   Pressable,
   ScrollView,
@@ -77,6 +78,19 @@ function App() {
     screen === 'trips' ? <TripsScreen /> :
     screen === 'wallet' ? <WalletScreen /> :
     screen === 'inbox' ? <InboxScreen /> :
+    screen === 'driverDashboard' ? <DriverDashboardScreen /> :
+    screen === 'driverWaiting' ? <DriverWaitingScreen /> :
+    screen === 'driverRequest' ? <DriverRequestScreen /> :
+    screen === 'driverAccepted' ? <DriverAcceptedScreen /> :
+    screen === 'driverDriving' ? <DriverDrivingScreen /> :
+    screen === 'driverArrived' ? <DriverArrivedScreen /> :
+    screen === 'driverStarted' ? <DriverStartedScreen /> :
+    screen === 'driverCompleted' ? <DriverCompletedScreen /> :
+    screen === 'driverPayment' ? <DriverPaymentScreen /> :
+    screen === 'driverTrust' ? <DriverTrustScreen /> :
+    screen === 'driverPerformance' ? <DriverPerformanceScreen /> :
+    screen === 'driverWallet' ? <DriverWalletScreen /> :
+    screen === 'driverProfile' ? <DriverProfileScreen /> :
     <ProfileScreen />;
 
   return (
@@ -693,6 +707,7 @@ function ProfileScreen() {
     { icon: 'shield', label: 'Safety center', action: () => showToast('Safety center opened') },
     { icon: 'help-circle', label: 'Help & support', action: () => showToast('Support is here for you') },
     { icon: 'settings', label: 'Settings', action: () => showToast('Settings opened') },
+    { icon: 'briefcase', label: 'Switch to driver mode', action: () => { setScreen('driverDashboard'); } },
   ];
   return (
     <View style={[styles.screen, { backgroundColor: colors.background }]}>
@@ -704,6 +719,397 @@ function ProfileScreen() {
       </ScrollView>
     </View>
   );
+}
+
+function DriverDashboardScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, setDriverOnline, setDriverStage, showToast } = useDraba();
+  const goOnline = () => {
+    setDriverOnline(true);
+    setDriverStage('waiting');
+    setScreen('driverWaiting');
+  };
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <View style={[styles.driverHeader, { paddingTop: insets.top + 12 }]}>
+        <View>
+          <Text style={[styles.sectionEyebrow, { color: colors.primary }]}>DRIVER MODE</Text>
+          <Text style={[styles.headerName, { color: colors.foreground }]}>Good morning, Chisom</Text>
+        </View>
+        <Pressable onPress={() => press(() => setScreen('driverProfile'))} style={[styles.avatar, { backgroundColor: colors.primary }]}>
+          <Text style={[styles.avatarText, { color: colors.primaryForeground }]}>CN</Text>
+        </Pressable>
+      </View>
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 28, paddingBottom: insets.bottom + 110 }} showsVerticalScrollIndicator={false}>
+        <Text style={[styles.caption, { color: colors.mutedForeground }]}>EARNINGS THIS WEEK</Text>
+        <View style={styles.earningsRow}>
+          <Text style={[styles.driverEarnings, { color: colors.foreground }]}>₦86,420</Text>
+          <View style={[styles.changePill, { backgroundColor: colors.accent }]}><Icon name="trending-up" size={13} color={colors.success} /><Text style={[styles.tinyText, { color: colors.success }]}>12.4%</Text></View>
+        </View>
+        <Text style={[styles.caption, { color: colors.mutedForeground }]}>After Draba service fees · 24 trips</Text>
+        <View style={[styles.driverOnlinePanel, { borderColor: colors.border, backgroundColor: colors.background }]}>
+          <View style={styles.rowBetween}>
+            <View style={styles.iconTitleRow}><View style={[styles.driverStatusDot, { backgroundColor: colors.success }]} /><View><Text style={[styles.cardTitle, { color: colors.foreground }]}>You’re offline</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Go online to receive nearby requests</Text></View></View>
+            <Icon name="power" size={19} color={colors.mutedForeground} />
+          </View>
+          <Pressable onPress={() => press(goOnline)} style={[styles.goOnlineButton, { backgroundColor: colors.primary }]}>
+            <Icon name="radio" size={17} color={colors.primaryForeground} />
+            <Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>Go online</Text>
+          </Pressable>
+        </View>
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 30 }]}>Your trust</Text>
+        <Pressable onPress={() => press(() => setScreen('driverTrust'))} style={[styles.trustSummary, { borderColor: colors.border }]}>
+          <View style={[styles.trustScoreBadge, { backgroundColor: colors.accent }]}><Text style={[styles.trustScoreValue, { color: colors.success }]}>96</Text><Text style={[styles.tinyText, { color: colors.accentForeground }]}>/100</Text></View>
+          <View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Excellent standing</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Your trust score is higher than 87% of drivers</Text></View>
+          <Icon name="chevron-right" size={18} color={colors.mutedForeground} />
+        </Pressable>
+        <View style={styles.driverQuickGrid}>
+          <DriverQuickStat icon="activity" label="Performance" value="98%" onPress={() => setScreen('driverPerformance')} colors={colors} />
+          <DriverQuickStat icon="credit-card" label="Wallet" value="₦186k" onPress={() => setScreen('driverWallet')} colors={colors} />
+        </View>
+        <Pressable onPress={() => press(() => showToast('Your driver schedule is clear today'))} style={[styles.scheduleHint, { backgroundColor: colors.input }]}>
+          <Icon name="calendar" size={17} color={colors.primary} />
+          <View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Availability today</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 2 }]}>You’re available from 8:00 AM to 8:00 PM</Text></View>
+          <Icon name="chevron-right" size={17} color={colors.mutedForeground} />
+        </Pressable>
+      </ScrollView>
+      <DriverBottomNav active="dashboard" colors={colors} />
+    </View>
+  );
+}
+
+function DriverWaitingScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, setDriverOnline, setDriverStage } = useDraba();
+  const showRequest = () => {
+    setDriverStage('request');
+    setScreen('driverRequest');
+  };
+  return (
+    <View style={[styles.mapScreen, { backgroundColor: colors.map }]}>
+      <MapCanvas colors={colors} />
+      <View style={[styles.driverOverlayHeader, { paddingTop: insets.top + 12 }]}>
+        <RoundIconButton name="chevron-left" onPress={() => press(() => setScreen('driverDashboard'))} colors={colors} />
+        <View style={[styles.livePill, { backgroundColor: colors.card }]}><View style={[styles.pulseDot, { backgroundColor: colors.success }]} /><Text style={[styles.caption, { color: colors.foreground }]}>ONLINE</Text></View>
+        <RoundIconButton name="sliders" onPress={() => press(() => setScreen('driverProfile'))} colors={colors} />
+      </View>
+      <View style={[styles.driverWaitingSheet, { backgroundColor: colors.background, paddingBottom: insets.bottom + 88 }]}>
+        <View style={[styles.sheetHandle, { backgroundColor: colors.border }]} />
+        <Text style={[styles.sectionEyebrow, { color: colors.success }]}>05 · ONLINE WAITING</Text>
+        <Text style={[styles.driverSheetTitle, { color: colors.foreground }]}>Nearby demand</Text>
+        <Text style={[styles.body, { color: colors.mutedForeground, marginTop: 4 }]}>You’re visible to clients around Lagos Island.</Text>
+        <View style={styles.demandStats}>
+          <DriverKpi label="Requests nearby" value="05" icon="users" colors={colors} />
+          <DriverKpi label="Avg. wait" value="3 min" icon="clock" colors={colors} />
+          <DriverKpi label="Availability" value="On" icon="radio" colors={colors} />
+        </View>
+        <Pressable onPress={() => press(showRequest)} style={[styles.primaryButton, { backgroundColor: colors.primary, marginTop: 19 }]}>
+          <Icon name="bell" size={17} color={colors.primaryForeground} />
+          <Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>View incoming request</Text>
+        </Pressable>
+        <Pressable onPress={() => press(() => { setDriverOnline(false); setDriverStage('idle'); setScreen('driverDashboard'); })} style={styles.ghostButton}>
+          <Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Go offline</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function DriverRequestScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, setDriverStage } = useDraba();
+  const [countdown, setCountdown] = useState(18);
+  useEffect(() => {
+    const timer = setInterval(() => setCountdown((value) => Math.max(0, value - 1)), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const accept = () => {
+    setDriverStage('accepted');
+    setScreen('driverAccepted');
+  };
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <View style={[styles.compactHeader, { paddingTop: insets.top + 10 }]}>
+        <Pressable onPress={() => press(() => setScreen('driverWaiting'))} style={styles.backButton}><Icon name="chevron-left" size={21} color={colors.foreground} /></Pressable>
+        <View style={styles.flex}><Text style={[styles.sectionEyebrow, { color: colors.warning }]}>06 · NEW REQUEST</Text><Text style={[styles.authTitleSmall, { color: colors.foreground, marginTop: 4 }]}>A client needs you</Text></View>
+        <View style={[styles.countdownPill, { backgroundColor: colors.accent }]}><Icon name="clock" size={13} color={colors.warning} /><Text style={[styles.cardTitle, { color: colors.warning }]}>00:{String(countdown).padStart(2, '0')}</Text></View>
+      </View>
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 10, paddingBottom: insets.bottom + 25 }} showsVerticalScrollIndicator={false}>
+        <View style={[styles.requestHero, { backgroundColor: colors.input }]}>
+          <View style={[styles.requestClientAvatar, { backgroundColor: colors.primary }]}><Text style={[styles.driverInitials, { color: colors.primaryForeground }]}>AO</Text></View>
+          <View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Amara Okafor</Text><Text style={[styles.caption, { color: colors.success, marginTop: 3 }]}><Icon name="shield" size={12} color={colors.success} /> Verified client</Text></View>
+          <View style={{ alignItems: 'flex-end' }}><Text style={[styles.caption, { color: colors.warning }]}>★ 4.9</Text><Text style={[styles.tinyText, { color: colors.mutedForeground, marginTop: 3 }]}>12 trips</Text></View>
+        </View>
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 28 }]}>Trip details</Text>
+        <View style={[styles.requestDetails, { borderColor: colors.border }]}>
+          <RouteRow icon="circle" label="Pickup" value="Landmark Beach, Oniru" color={colors.success} colors={colors} />
+          <RouteRow icon="map-pin" label="Destination" value="Murtala Muhammed Airport" color={colors.primary} colors={colors} />
+          <View style={[styles.divider, { backgroundColor: colors.border }]} />
+          <View style={styles.driverKpiRow}><DriverKpi label="Distance" value="6.4 km" icon="navigation" colors={colors} /><DriverKpi label="Est. time" value="24 min" icon="clock" colors={colors} /><DriverKpi label="Your fare" value="₦6,540" icon="credit-card" colors={colors} /></View>
+        </View>
+        <View style={[styles.requestNote, { borderColor: colors.border }]}><Icon name="info" size={16} color={colors.primary} /><Text style={[styles.caption, { color: colors.mutedForeground, flex: 1 }]}>The client owns the vehicle. Please arrive at the pickup point before starting the trip.</Text></View>
+        <SwipeAccept onAccept={accept} colors={colors} />
+        <Pressable onPress={() => press(() => setScreen('driverWaiting'))} style={styles.ghostButton}><Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Decline request</Text></Pressable>
+      </ScrollView>
+    </View>
+  );
+}
+
+function DriverAcceptedScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, showToast } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Accepted" subtitle="The client is expecting you" onBack={() => setScreen('driverWaiting')} colors={colors} />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 5, paddingBottom: insets.bottom + 24 }} showsVerticalScrollIndicator={false}>
+        <StagePill label="07 · ACCEPTED" icon="check-circle" colors={colors} />
+        <View style={styles.acceptedHero}><View style={[styles.etaCircle, { borderColor: colors.primary }]}><Text style={[styles.etaNumber, { color: colors.foreground }]}>07</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>MIN</Text></View><Text style={[styles.displayTitle, { color: colors.foreground, textAlign: 'center', marginTop: 22 }]}>Navigate to pickup.</Text><Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 7 }]}>Landmark Beach, Oniru</Text></View>
+        <View style={[styles.routeSummary, { borderColor: colors.border }]}><RouteRow icon="circle" label="Pickup" value="Landmark Beach, Oniru" color={colors.success} colors={colors} /><RouteRow icon="map-pin" label="Destination" value="Murtala Muhammed Airport" color={colors.primary} colors={colors} /></View>
+        <Pressable onPress={() => press(() => setScreen('driverDriving'))} style={[styles.primaryButton, { backgroundColor: colors.primary, marginTop: 25 }]}><Icon name="navigation" size={17} color={colors.primaryForeground} /><Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>Start navigation</Text></Pressable>
+        <View style={styles.tripActions}><OutlineButton label="Call client" icon="phone" onPress={() => showToast('Calling Amara Okafor')} colors={colors} /><OutlineButton label="Message" icon="message-circle" onPress={() => showToast('Message opened')} colors={colors} /></View>
+      </ScrollView>
+    </View>
+  );
+}
+
+function DriverDrivingScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, showToast } = useDraba();
+  return (
+    <View style={[styles.mapScreen, { backgroundColor: colors.map }]}>
+      <MapCanvas colors={colors} activeRoute />
+      <View style={[styles.driverOverlayHeader, { paddingTop: insets.top + 12 }]}>
+        <RoundIconButton name="chevron-left" onPress={() => press(() => setScreen('driverAccepted'))} colors={colors} />
+        <View style={[styles.livePill, { backgroundColor: colors.card }]}><View style={[styles.pulseDot, { backgroundColor: colors.primary }]} /><Text style={[styles.caption, { color: colors.foreground }]}>08 · EN ROUTE</Text></View>
+        <RoundIconButton name="more-horizontal" onPress={() => press(() => showToast('Navigation options'))} colors={colors} />
+      </View>
+      <View style={[styles.driverTripSheet, { backgroundColor: colors.background, paddingBottom: insets.bottom + 18 }]}>
+        <Text style={[styles.sectionEyebrow, { color: colors.primary }]}>DRIVING TO CLIENT</Text>
+        <View style={styles.rowBetween}><View><Text style={[styles.driverSheetTitle, { color: colors.foreground }]}>Landmark Beach</Text><Text style={[styles.body, { color: colors.mutedForeground, marginTop: 3 }]}>Oniru · 5.2 km remaining</Text></View><View style={styles.etaBlock}><Text style={[styles.etaNumberSmall, { color: colors.foreground }]}>07</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>MIN ETA</Text></View></View>
+        <View style={[styles.navigationHint, { backgroundColor: colors.input }]}><Icon name="corner-up-right" size={19} color={colors.primary} /><Text style={[styles.cardTitle, { color: colors.foreground, flex: 1 }]}>Turn right onto Ahmadu Bello Way</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}>400 m</Text></View>
+        <View style={styles.tripActions}><OutlineButton label="Call" icon="phone" onPress={() => showToast('Calling Amara Okafor')} colors={colors} /><OutlineButton label="Chat" icon="message-circle" onPress={() => showToast('Message opened')} colors={colors} /><OutlineButton label="Share" icon="share-2" onPress={() => showToast('Route shared')} colors={colors} /></View>
+        <Pressable onPress={() => press(() => setScreen('driverArrived'))} style={[styles.primaryButton, { backgroundColor: colors.primary, marginTop: 14 }]}><Icon name="map-pin" size={17} color={colors.primaryForeground} /><Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>I’ve arrived</Text></Pressable>
+      </View>
+    </View>
+  );
+}
+
+function DriverArrivedScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, showToast } = useDraba();
+  const [waitSeconds, setWaitSeconds] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => setWaitSeconds((value) => value + 1), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Arrived" subtitle="The client has been notified" onBack={() => setScreen('driverDriving')} colors={colors} />
+      <View style={styles.arrivedContent}>
+        <StagePill label="09 · ARRIVED" icon="map-pin" colors={colors} />
+        <View style={[styles.waitingIcon, { backgroundColor: colors.accent }]}><Icon name="clock" size={32} color={colors.success} /></View>
+        <Text style={[styles.displayTitle, { color: colors.foreground, textAlign: 'center', marginTop: 20 }]}>Waiting for Amara.</Text>
+        <Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 7 }]}>You’re at Landmark Beach pickup.</Text>
+        <Text style={[styles.waitTimer, { color: colors.foreground }]}>{String(Math.floor(waitSeconds / 60)).padStart(2, '0')}:{String(waitSeconds % 60).padStart(2, '0')}</Text>
+        <Text style={[styles.caption, { color: colors.mutedForeground }]}>WAITING TIME</Text>
+        <View style={[styles.clientNotified, { borderColor: colors.border }]}><Icon name="check-circle" size={17} color={colors.success} /><Text style={[styles.caption, { color: colors.mutedForeground, flex: 1 }]}>Amara has been notified that you’ve arrived.</Text></View>
+      </View>
+      <View style={[styles.bottomCta, { paddingBottom: insets.bottom + 18 }]}><PrimaryButton label="Start trip" onPress={() => press(() => setScreen('driverStarted'))} colors={colors} /><Pressable onPress={() => press(() => showToast('Client has been notified again'))} style={styles.ghostButton}><Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Notify client again</Text></Pressable></View>
+    </View>
+  );
+}
+
+function DriverStartedScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, showToast } = useDraba();
+  return (
+    <View style={[styles.mapScreen, { backgroundColor: colors.map }]}>
+      <MapCanvas colors={colors} activeRoute />
+      <View style={[styles.driverOverlayHeader, { paddingTop: insets.top + 12 }]}>
+        <View style={[styles.livePill, { backgroundColor: colors.card }]}><View style={[styles.pulseDot, { backgroundColor: colors.success }]} /><Text style={[styles.caption, { color: colors.foreground }]}>10 · TRIP STARTED</Text></View>
+        <RoundIconButton name="more-horizontal" onPress={() => press(() => showToast('Trip options'))} colors={colors} />
+      </View>
+      <View style={[styles.driverTripSheet, { backgroundColor: colors.background, paddingBottom: insets.bottom + 18 }]}>
+        <Text style={[styles.sectionEyebrow, { color: colors.success }]}>NAVIGATION</Text>
+        <View style={styles.rowBetween}><View><Text style={[styles.driverSheetTitle, { color: colors.foreground }]}>Murtala Muhammed Airport</Text><Text style={[styles.body, { color: colors.mutedForeground, marginTop: 3 }]}>Destination · 18.4 km remaining</Text></View><View style={styles.etaBlock}><Text style={[styles.etaNumberSmall, { color: colors.foreground }]}>24</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>MIN ETA</Text></View></View>
+        <View style={[styles.navigationHint, { backgroundColor: colors.input }]}><Icon name="navigation" size={18} color={colors.primary} /><Text style={[styles.cardTitle, { color: colors.foreground, flex: 1 }]}>Continue straight for 2.1 km</Text><Text style={[styles.caption, { color: colors.mutedForeground }]}>2.1 km</Text></View>
+        <View style={styles.tripActions}><OutlineButton label="Pause" icon="pause" onPress={() => showToast('Trip paused')} colors={colors} /><OutlineButton label="Emergency" icon="alert-circle" onPress={() => showToast('Emergency support is ready')} colors={colors} /><OutlineButton label="Share" icon="share-2" onPress={() => showToast('Trip shared')} colors={colors} /></View>
+        <Pressable onPress={() => press(() => setScreen('driverCompleted'))} style={[styles.primaryButton, { backgroundColor: colors.success, marginTop: 14 }]}><Icon name="check" size={17} color={colors.background} strokeWidth={3} /><Text style={[styles.buttonLabel, { color: colors.background }]}>End trip</Text></Pressable>
+      </View>
+    </View>
+  );
+}
+
+function DriverCompletedScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, setDriverStage } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background, paddingHorizontal: 24, paddingTop: insets.top + 28, paddingBottom: insets.bottom + 16 }]}>
+      <StagePill label="11 · TRIP COMPLETED" icon="check-circle" colors={colors} />
+      <View style={styles.completeHero}><View style={[styles.successCircle, { backgroundColor: colors.success }]}><Icon name="check" size={44} color={colors.background} strokeWidth={3} /></View><Text style={[styles.displayTitle, { color: colors.foreground, textAlign: 'center', marginTop: 24 }]}>Trip complete.</Text><Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 8 }]}>Awaiting client confirmation before your wallet is updated.</Text></View>
+      <View style={[styles.receiptCard, { borderColor: colors.border }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Client</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>Amara Okafor</Text></View><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Trip fare</Text><Text style={[styles.estimateAmount, { color: colors.foreground }]}>₦6,540</Text></View><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Status</Text><Text style={[styles.caption, { color: colors.warning }]}>Awaiting confirmation</Text></View></View>
+      <View style={styles.bottomCta}><PrimaryButton label="Simulate client confirmation" onPress={() => press(() => { setDriverStage('completed'); setScreen('driverPayment'); })} colors={colors} /><Pressable onPress={() => press(() => setScreen('driverDashboard'))} style={styles.ghostButton}><Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Return to dashboard</Text></Pressable></View>
+    </View>
+  );
+}
+
+function DriverPaymentScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, setDriverStage } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background, paddingHorizontal: 24, paddingTop: insets.top + 28, paddingBottom: insets.bottom + 16 }]}>
+      <StagePill label="12 · PAYMENT" icon="credit-card" colors={colors} />
+      <View style={styles.paymentHero}><View style={[styles.paymentIcon, { backgroundColor: colors.accent }]}><Icon name="arrow-down-left" size={26} color={colors.success} /></View><Text style={[styles.displayTitle, { color: colors.foreground, textAlign: 'center', marginTop: 20 }]}>₦6,540 added.</Text><Text style={[styles.body, { color: colors.mutedForeground, textAlign: 'center', marginTop: 7 }]}>Your wallet has been updated after client confirmation.</Text></View>
+      <View style={[styles.paymentBreakdown, { borderColor: colors.border }]}><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Trip fare</Text><Text style={[styles.cardTitle, { color: colors.foreground }]}>₦7,200</Text></View><View style={styles.rowBetween}><Text style={[styles.caption, { color: colors.mutedForeground }]}>Draba service fee</Text><Text style={[styles.cardTitle, { color: colors.mutedForeground }]}>-₦660</Text></View><View style={[styles.divider, { backgroundColor: colors.border }]} /><View style={styles.rowBetween}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Net earnings</Text><Text style={[styles.estimateAmount, { color: colors.success }]}>₦6,540</Text></View></View>
+      <View style={styles.bottomCta}><PrimaryButton label="View driver wallet" onPress={() => press(() => { setDriverStage('paid'); setScreen('driverWallet'); })} colors={colors} /><Pressable onPress={() => press(() => setScreen('driverDashboard'))} style={styles.ghostButton}><Text style={[styles.buttonLabel, { color: colors.mutedForeground }]}>Back to dashboard</Text></Pressable></View>
+    </View>
+  );
+}
+
+function DriverTrustScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Trust dashboard" subtitle="The standard you set for every client" onBack={() => setScreen('driverDashboard')} colors={colors} />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 3, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.trustDashboardHero}><View style={[styles.trustRing, { borderColor: colors.success }]}><Text style={[styles.trustNumber, { color: colors.foreground }]}>96</Text><Text style={[styles.tinyText, { color: colors.mutedForeground }]}>/100</Text></View><Text style={[styles.authTitleSmall, { color: colors.foreground, marginTop: 17 }]}>Excellent trust score</Text><Text style={[styles.caption, { color: colors.mutedForeground, textAlign: 'center', marginTop: 4 }]}>You’re in the top 13% of active drivers.</Text></View>
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 28 }]}>Score progress</Text>
+        <TrustProgress label="Identity verification" value="100%" progress={1} icon="shield" colors={colors} />
+        <TrustProgress label="Safe driving" value="98%" progress={0.98} icon="navigation" colors={colors} />
+        <TrustProgress label="Client experience" value="96%" progress={0.96} icon="star" colors={colors} />
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 28 }]}>Recommendations</Text>
+        <View style={[styles.recommendation, { backgroundColor: colors.input }]}><Icon name="thumbs-up" size={18} color={colors.success} /><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Keep your response time low</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>You’re only 2 points away from Elite status.</Text></View></View>
+        <View style={[styles.recommendation, { backgroundColor: colors.input }]}><Icon name="file-text" size={18} color={colors.primary} /><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>Documents are up to date</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Next review is due in November 2026.</Text></View></View>
+      </ScrollView>
+      <DriverBottomNav active="trust" colors={colors} />
+    </View>
+  );
+}
+
+function DriverPerformanceScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Performance" subtitle="Your weekly driver scorecard" onBack={() => setScreen('driverDashboard')} colors={colors} />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 2, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.performanceGrid}><PerformanceMetric label="Acceptance" value="94%" delta="+4.2%" icon="check-circle" colors={colors} /><PerformanceMetric label="Completion" value="98%" delta="+1.8%" icon="flag" colors={colors} /><PerformanceMetric label="Client rating" value="4.9" delta="+0.1" icon="star" colors={colors} /><PerformanceMetric label="On-time" value="96%" delta="+3.5%" icon="clock" colors={colors} /></View>
+        <View style={[styles.performanceCallout, { borderColor: colors.border }]}><Icon name="award" size={20} color={colors.warning} /><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>You’re doing excellent</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Your strongest metric this week is trip completion.</Text></View></View>
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 29 }]}>Recent feedback</Text>
+        <View style={styles.feedbackRow}><View style={[styles.requestClientAvatar, { backgroundColor: colors.accent }]}><Text style={[styles.tinyText, { color: colors.foreground }]}>TO</Text></View><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>“Calm and professional.”</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Tobi · Yesterday</Text></View><Text style={[styles.caption, { color: colors.warning }]}>★ 5.0</Text></View>
+        <View style={styles.feedbackRow}><View style={[styles.requestClientAvatar, { backgroundColor: colors.primary }]}><Text style={[styles.tinyText, { color: colors.primaryForeground }]}>NA</Text></View><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>“Arrived right on time.”</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Nneka · Aug 25</Text></View><Text style={[styles.caption, { color: colors.warning }]}>★ 5.0</Text></View>
+      </ScrollView>
+      <DriverBottomNav active="performance" colors={colors} />
+    </View>
+  );
+}
+
+function DriverWalletScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, showToast } = useDraba();
+  const driverTransactions = [{ label: 'Trip · Amara Okafor', date: 'Today, 11:24 AM', amount: '+₦6,540' }, { label: 'Trip · Tobi Adeyemi', date: 'Yesterday, 4:08 PM', amount: '+₦5,980' }, { label: 'Withdrawal to bank', date: 'Aug 26, 9:14 AM', amount: '-₦40,000' }];
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Driver wallet" subtitle="Your earnings, always within reach" onBack={() => setScreen('driverDashboard')} colors={colors} />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 2, paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+        <Text style={[styles.caption, { color: colors.mutedForeground }]}>AVAILABLE TO WITHDRAW</Text>
+        <Text style={[styles.driverWalletAmount, { color: colors.foreground }]}>₦186,420</Text>
+        <Text style={[styles.caption, { color: colors.mutedForeground }]}>Next payout · Friday, 30 August</Text>
+        <Pressable onPress={() => press(() => showToast('Withdrawal flow opened'))} style={[styles.primaryButton, { backgroundColor: colors.primary, marginTop: 20 }]}><Icon name="download" size={17} color={colors.primaryForeground} /><Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>Withdraw earnings</Text></Pressable>
+        <View style={styles.rowBetween}><Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 32 }]}>Transactions</Text><Text style={[styles.linkText, { color: colors.primary, marginTop: 32 }]}>See all</Text></View>
+        {driverTransactions.map((transaction) => <View key={transaction.label} style={[styles.transactionRow, { borderBottomColor: colors.border }]}><View style={[styles.iconCircle, { backgroundColor: transaction.amount.startsWith('+') ? colors.accent : colors.input }]}><Icon name={transaction.amount.startsWith('+') ? 'arrow-down-left' : 'arrow-up-right'} size={16} color={transaction.amount.startsWith('+') ? colors.success : colors.primary} /></View><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{transaction.label}</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>{transaction.date}</Text></View><Text style={[styles.cardTitle, { color: transaction.amount.startsWith('+') ? colors.success : colors.foreground }]}>{transaction.amount}</Text></View>)}
+      </ScrollView>
+      <DriverBottomNav active="wallet" colors={colors} />
+    </View>
+  );
+}
+
+function DriverProfileScreen() {
+  const colors = useColors();
+  const insets = useSafeAreaInsets();
+  const { setScreen, driverOnline, setDriverOnline, showToast } = useDraba();
+  return (
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <PageHeader title="Driver profile" subtitle="Verification, documents, availability" onBack={() => setScreen('driverDashboard')} colors={colors} />
+      <ScrollView contentContainerStyle={{ padding: 24, paddingTop: 2, paddingBottom: insets.bottom + 35 }} showsVerticalScrollIndicator={false}>
+        <View style={styles.driverProfileHero}><View style={[styles.profileAvatar, { backgroundColor: colors.primary }]}><Text style={[styles.profileInitials, { color: colors.primaryForeground }]}>CN</Text></View><Text style={[styles.displayName, { color: colors.foreground, marginTop: 13 }]}>Chisom Ndudim</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Professional driver · Lagos Island</Text><View style={[styles.verifiedPill, { backgroundColor: colors.accent }]}><Icon name="check-circle" size={13} color={colors.success} /><Text style={[styles.caption, { color: colors.accentForeground }]}>Fully verified</Text></View></View>
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 28 }]}>Verification</Text>
+        <VerificationItem icon="user-check" title="Identity verified" subtitle="Government ID and face match complete" colors={colors} />
+        <VerificationItem icon="check-circle" title="Driver’s license" subtitle="Valid until November 2027" colors={colors} />
+        <VerificationItem icon="file-text" title="Vehicle documents" subtitle="Insurance and roadworthiness on file" colors={colors} />
+        <Text style={[styles.sectionTitle, { color: colors.foreground, marginTop: 28 }]}>Availability</Text>
+        <View style={[styles.availabilityRow, { borderColor: colors.border }]}><View style={[styles.iconCircle, { backgroundColor: colors.input }]}><Icon name="radio" size={17} color={driverOnline ? colors.success : colors.mutedForeground} /></View><View style={styles.flex}><Text style={[styles.cardTitle, { color: colors.foreground }]}>{driverOnline ? 'Online for requests' : 'Currently offline'}</Text><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 3 }]}>Receive requests around your preferred area</Text></View><Pressable onPress={() => { setDriverOnline(!driverOnline); showToast(driverOnline ? 'You are offline' : 'You are online'); }} style={[styles.toggle, { backgroundColor: driverOnline ? colors.success : colors.input }]}><View style={[styles.toggleKnob, { backgroundColor: colors.foreground, alignSelf: driverOnline ? 'flex-end' : 'flex-start' }]} /></Pressable></View>
+        <Pressable onPress={() => press(() => { setScreen('home'); })} style={[styles.switchModeButton, { borderColor: colors.border }]}><Icon name="repeat" size={16} color={colors.primary} /><Text style={[styles.buttonLabel, { color: colors.foreground }]}>Switch to client mode</Text></Pressable>
+      </ScrollView>
+    </View>
+  );
+}
+
+function DriverQuickStat({ icon, label, value, onPress, colors }: { icon: keyof typeof Feather.glyphMap; label: string; value: string; onPress: () => void; colors: ReturnType<typeof useColors> }) {
+  return <Pressable onPress={() => press(onPress)} style={[styles.driverQuickStat, { borderColor: colors.border }]}><Icon name={icon} size={16} color={colors.primary} /><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 12 }]}>{label}</Text><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 3 }]}>{value}</Text></Pressable>;
+}
+
+function DriverKpi({ label, value, icon, colors }: { label: string; value: string; icon: keyof typeof Feather.glyphMap; colors: ReturnType<typeof useColors> }) {
+  return <View style={styles.driverKpi}><Icon name={icon} size={14} color={colors.primary} /><Text style={[styles.tinyText, { color: colors.mutedForeground, marginTop: 6 }]}>{label}</Text><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 3 }]}>{value}</Text></View>;
+}
+
+function RouteRow({ icon, label, value, color, colors }: { icon: keyof typeof Feather.glyphMap; label: string; value: string; color: string; colors: ReturnType<typeof useColors> }) {
+  return <View style={styles.routeDetailRow}><Icon name={icon} size={14} color={color} /><View style={styles.flex}><Text style={[styles.caption, { color: colors.mutedForeground }]}>{label}</Text><Text style={[styles.cardTitle, { color: colors.foreground, marginTop: 2 }]}>{value}</Text></View></View>;
+}
+
+function StagePill({ label, icon, colors }: { label: string; icon: keyof typeof Feather.glyphMap; colors: ReturnType<typeof useColors> }) {
+  return <View style={[styles.stagePill, { backgroundColor: colors.accent }]}><Icon name={icon} size={13} color={colors.success} /><Text style={[styles.sectionEyebrow, { color: colors.success }]}>{label}</Text></View>;
+}
+
+function TrustProgress({ label, value, progress, icon, colors }: { label: string; value: string; progress: number; icon: keyof typeof Feather.glyphMap; colors: ReturnType<typeof useColors> }) {
+  return <View style={styles.trustProgress}><View style={styles.rowBetween}><View style={styles.iconTitleRow}><Icon name={icon} size={15} color={colors.primary} /><Text style={[styles.caption, { color: colors.foreground }]}>{label}</Text></View><Text style={[styles.caption, { color: colors.success }]}>{value}</Text></View><View style={[styles.progressBar, { backgroundColor: colors.input }]}><View style={[styles.progressFill, { backgroundColor: colors.success, width: `${progress * 100}%` }]} /></View></View>;
+}
+
+function PerformanceMetric({ label, value, delta, icon, colors }: { label: string; value: string; delta: string; icon: keyof typeof Feather.glyphMap; colors: ReturnType<typeof useColors> }) {
+  return <View style={[styles.performanceMetric, { borderColor: colors.border }]}><Icon name={icon} size={16} color={colors.primary} /><Text style={[styles.caption, { color: colors.mutedForeground, marginTop: 11 }]}>{label}</Text><Text style={[styles.metricValue, { color: colors.foreground }]}>{value}</Text><Text style={[styles.tinyText, { color: colors.success }]}>{delta} this week</Text></View>;
+}
+
+function SwipeAccept({ onAccept, colors }: { onAccept: () => void; colors: ReturnType<typeof useColors> }) {
+  const translateX = useRef(new Animated.Value(0)).current;
+  const useNativeDriver = Platform.OS !== 'web';
+  const panResponder = useRef(PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dx) > 4,
+    onPanResponderMove: (_, gesture) => translateX.setValue(Math.max(0, Math.min(218, gesture.dx))),
+    onPanResponderRelease: (_, gesture) => {
+      if (gesture.dx > 150) {
+        Animated.timing(translateX, { toValue: 218, duration: 180, useNativeDriver }).start(onAccept);
+      } else {
+        Animated.spring(translateX, { toValue: 0, damping: 18, stiffness: 190, useNativeDriver }).start();
+      }
+    },
+  })).current;
+  return <View style={[styles.swipeAccept, { backgroundColor: colors.primary }]}><Animated.View {...panResponder.panHandlers} style={[styles.swipeThumb, { backgroundColor: colors.primaryForeground, transform: [{ translateX }] }]}><Icon name="arrow-right" size={19} color={colors.primary} /></Animated.View><Text style={[styles.buttonLabel, { color: colors.primaryForeground }]}>Swipe to accept</Text><Icon name="chevrons-right" size={18} color={colors.primaryForeground} /></View>;
+}
+
+function DriverBottomNav({ active, colors }: { active: 'dashboard' | 'trust' | 'performance' | 'wallet'; colors: ReturnType<typeof useColors> }) {
+  const insets = useSafeAreaInsets();
+  const { setScreen } = useDraba();
+  const tabs: Array<{ key: typeof active; label: string; icon: keyof typeof Feather.glyphMap; screen: 'driverDashboard' | 'driverTrust' | 'driverPerformance' | 'driverWallet' }> = [
+    { key: 'dashboard', label: 'Home', icon: 'home', screen: 'driverDashboard' },
+    { key: 'trust', label: 'Trust', icon: 'shield', screen: 'driverTrust' },
+    { key: 'performance', label: 'Stats', icon: 'activity', screen: 'driverPerformance' },
+    { key: 'wallet', label: 'Wallet', icon: 'credit-card', screen: 'driverWallet' },
+  ];
+  return <View style={[styles.bottomNav, { backgroundColor: colors.card, borderColor: colors.border, paddingBottom: Platform.OS === 'web' ? 34 : insets.bottom + 8 }]}>{tabs.map((tab) => <Pressable key={tab.key} onPress={() => press(() => setScreen(tab.screen))} style={styles.navItem} testID={`driver-nav-${tab.key}`}><Icon name={tab.icon} size={19} color={active === tab.key ? colors.primary : colors.mutedForeground} /><Text style={[styles.navLabel, { color: active === tab.key ? colors.primary : colors.mutedForeground }]}>{tab.label}</Text></Pressable>)}<Pressable onPress={() => press(() => setScreen('driverProfile'))} style={styles.navItem} testID="driver-nav-profile"><Icon name="user" size={19} color={colors.mutedForeground} /><Text style={[styles.navLabel, { color: colors.mutedForeground }]}>Profile</Text></Pressable></View>;
 }
 
 function PageHeader({ title, subtitle, onBack, colors }: { title: string; subtitle: string; onBack: () => void; colors: ReturnType<typeof useColors> }) {
@@ -752,6 +1158,66 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   transitionLayer: { ...StyleSheet.absoluteFillObject },
   screen: { flex: 1 },
+  driverHeader: { paddingHorizontal: 24, paddingBottom: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  earningsRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 6 },
+  driverEarnings: { fontSize: 43, fontWeight: '700', letterSpacing: -1.8 },
+  changePill: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 6, flexDirection: 'row', alignItems: 'center', gap: 4 },
+  driverOnlinePanel: { marginTop: 26, borderBottomWidth: 1, paddingBottom: 18 },
+  iconTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  driverStatusDot: { width: 10, height: 10, borderRadius: 5 },
+  goOnlineButton: { height: 49, borderRadius: 15, marginTop: 17, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  trustSummary: { marginTop: 12, borderBottomWidth: 1, paddingVertical: 15, flexDirection: 'row', alignItems: 'center', gap: 12 },
+  trustScoreBadge: { width: 54, height: 54, borderRadius: 18, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' },
+  trustScoreValue: { fontSize: 22, fontWeight: '700' },
+  driverQuickGrid: { flexDirection: 'row', gap: 10, marginTop: 12 },
+  driverQuickStat: { flex: 1, minHeight: 99, borderBottomWidth: 1, paddingVertical: 13 },
+  scheduleHint: { marginTop: 22, borderRadius: 15, padding: 13, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  driverOverlayHeader: { position: 'absolute', top: 0, left: 20, right: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  driverWaitingSheet: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 13, minHeight: SCREEN_HEIGHT * 0.37 },
+  driverSheetTitle: { fontSize: 24, fontWeight: '700', letterSpacing: -0.6, marginTop: 5 },
+  demandStats: { flexDirection: 'row', gap: 8, marginTop: 20 },
+  driverKpi: { flex: 1, minWidth: 0 },
+  driverKpiRow: { flexDirection: 'row', gap: 5, paddingTop: 15 },
+  countdownPill: { borderRadius: 11, paddingHorizontal: 9, paddingVertical: 7, flexDirection: 'row', alignItems: 'center', gap: 5 },
+  requestHero: { borderRadius: 18, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 11 },
+  requestClientAvatar: { width: 45, height: 45, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
+  requestDetails: { marginTop: 12, borderBottomWidth: 1, paddingVertical: 16 },
+  requestNote: { marginTop: 18, borderBottomWidth: 1, paddingBottom: 15, flexDirection: 'row', gap: 8 },
+  routeDetailRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 7 },
+  stagePill: { alignSelf: 'flex-start', borderRadius: 11, paddingHorizontal: 10, paddingVertical: 7, flexDirection: 'row', alignItems: 'center', gap: 6 },
+  acceptedHero: { alignItems: 'center', paddingTop: 27 },
+  etaCircle: { width: 107, height: 107, borderRadius: 54, borderWidth: 5, alignItems: 'center', justifyContent: 'center' },
+  etaNumber: { fontSize: 35, fontWeight: '700', letterSpacing: -1 },
+  routeSummary: { marginTop: 27, borderBottomWidth: 1, paddingBottom: 12 },
+  driverTripSheet: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 20, paddingTop: 17 },
+  etaBlock: { alignItems: 'flex-end' },
+  etaNumberSmall: { fontSize: 26, fontWeight: '700', letterSpacing: -0.7 },
+  navigationHint: { marginTop: 17, borderRadius: 14, padding: 12, flexDirection: 'row', alignItems: 'center', gap: 9 },
+  arrivedContent: { flex: 1, alignItems: 'center', paddingHorizontal: 24, paddingTop: 24 },
+  waitingIcon: { width: 78, height: 78, borderRadius: 28, alignItems: 'center', justifyContent: 'center', marginTop: 46 },
+  waitTimer: { fontSize: 42, fontWeight: '700', letterSpacing: -1, marginTop: 28 },
+  clientNotified: { width: '100%', borderBottomWidth: 1, paddingVertical: 13, marginTop: 26, flexDirection: 'row', alignItems: 'center', gap: 9 },
+  paymentHero: { alignItems: 'center', paddingTop: 50 },
+  paymentIcon: { width: 70, height: 70, borderRadius: 23, alignItems: 'center', justifyContent: 'center' },
+  paymentBreakdown: { borderBottomWidth: 1, paddingVertical: 17, gap: 14, marginTop: 32 },
+  trustDashboardHero: { alignItems: 'center', paddingTop: 16 },
+  trustProgress: { marginTop: 19 },
+  progressBar: { height: 6, borderRadius: 3, marginTop: 9, overflow: 'hidden' },
+  progressFill: { height: 6, borderRadius: 3 },
+  recommendation: { marginTop: 11, borderRadius: 15, padding: 13, flexDirection: 'row', gap: 10, alignItems: 'flex-start' },
+  performanceGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  performanceMetric: { width: '48%', minHeight: 126, borderBottomWidth: 1, paddingVertical: 13 },
+  metricValue: { fontSize: 25, fontWeight: '700', letterSpacing: -0.5, marginTop: 8, marginBottom: 2 },
+  performanceCallout: { marginTop: 22, borderBottomWidth: 1, paddingVertical: 15, flexDirection: 'row', gap: 10 },
+  feedbackRow: { paddingVertical: 15, borderBottomWidth: 1, borderBottomColor: '#294355', flexDirection: 'row', alignItems: 'center', gap: 10 },
+  driverWalletAmount: { fontSize: 38, fontWeight: '700', letterSpacing: -1.4, marginTop: 9 },
+  driverProfileHero: { alignItems: 'center', paddingTop: 6 },
+  availabilityRow: { borderBottomWidth: 1, paddingVertical: 15, flexDirection: 'row', alignItems: 'center', gap: 10 },
+  toggle: { width: 48, height: 28, borderRadius: 15, padding: 3, justifyContent: 'center' },
+  toggleKnob: { width: 22, height: 22, borderRadius: 11 },
+  switchModeButton: { marginTop: 26, borderWidth: 1, borderRadius: 15, height: 49, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  swipeAccept: { height: 58, borderRadius: 17, marginTop: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, overflow: 'hidden' },
+  swipeThumb: { position: 'absolute', left: 5, top: 5, width: 48, height: 48, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   brand: { fontSize: 22, fontWeight: '700', letterSpacing: 3, marginTop: 18 },
   brandSmall: { fontSize: 15, fontWeight: '700', letterSpacing: 2.5 },
